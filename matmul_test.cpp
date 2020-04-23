@@ -74,19 +74,19 @@ int main()
     plaidml::Settings::set("PLAIDML_DEVICE", "llvm_cpu.0");
     plaidml::Settings::set("PLAIDML_TARGET", "llvm_cpu");
 
-    auto A = plaidml::edsl::Placeholder(plaidml::DType::FLOAT32, {3, 3});
-    auto B = plaidml::edsl::Placeholder(plaidml::DType::FLOAT32, {3, 3});
+    auto A = plaidml::edsl::Placeholder(plaidml::DType::FLOAT64, {3, 3});
+    auto B = plaidml::edsl::Placeholder(plaidml::DType::FLOAT64, {3, 3});
 
     auto C = MatMul(A, B);
     auto program = makeProgram("matmul", {C});
 
-    std::vector<float> input = {
+    std::vector<double> input = {
         1.0, 2.0, 3.0,
         4.0, 5.0, 6.0,
         7.0, 8.0, 9.0,
     };
 
-    std::vector<float> expected = {
+    std::vector<double> expected = {
         30.0, 36.0, 42.0,
         66.0, 81.0, 96.0,
         102.0, 126.0, 150.0,
