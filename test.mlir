@@ -1,3 +1,5 @@
+// pmlc-opt lcr_tests/test.mlir -convert-std-to-llvm -target-cpu | pmlc-jit
+
 #map0 = affine_map<(d0, d1, d2) -> (d0, d1)>
 #map1 = affine_map<(d0, d1, d2) -> (d0, d2)>
 #map2 = affine_map<(d0, d1, d2) -> (d2, d1)>
