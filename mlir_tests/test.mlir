@@ -41,7 +41,7 @@ module {
   %E = std.tensor_load %0 : memref<2x2xf32>
   %D = std.tensor_load %1 : memref<2x2xf32>
 
-  call @mdot(%E, %D) : (tensor<2x2xf32>, tensor<2x2xf32>) -> (tensor<2x2xf32>)
+  %G = call @mdot(%E, %D) : (tensor<2x2xf32>, tensor<2x2xf32>) -> (tensor<2x2xf32>)
   //call @test(%D) : (tensor<2x2xf32>) -> (f32)
   //%c0 = "std.constant"() {value = 0: index} : () -> index
  

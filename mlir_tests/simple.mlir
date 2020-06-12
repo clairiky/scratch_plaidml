@@ -6,12 +6,12 @@ module {
 //     return %0: f32
 //   }
 
-  func @addTensors(%A: tensor<2x2xf32>) -> (tensor<2x2xf32>) {
+  func @addTensors(%A: tensor<2x2xf32>) -> (f32) {
     //%cst = constant 1.000000e+00 : f32
-    %x = addf %A, %A : tensor<2x2xf32>
-    //%cst = constant 1.000000e+00 : f32
-    //return %cst : f32
-    return %x : tensor<2x2xf32>
+    //%x = addf %A, %A : tensor<2x2xf32>
+    %cst = constant 1.000000e+00 : f32
+    return %cst : f32
+    //return %x : tensor<2x2xf32>
   }
   
   func @main() {
@@ -27,7 +27,7 @@ module {
     }
     %D = std.tensor_load %buf : memref<2x2xf32>
 
-    call @addTensors(%D) : (tensor<2x2xf32>) -> (tensor<2x2xf32>)
+    %E = call @addTensors(%D) : (tensor<2x2xf32>) -> (f32)
     //call @simpleLoad(%buf, %i, %j) : (memref<2x2xf32>, index, index) -> (f32)
     
     dealloc %buf : memref<2x2xf32>
