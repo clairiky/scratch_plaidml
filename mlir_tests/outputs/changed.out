@@ -1,0 +1,161 @@
+// *** IR Dump After ComputeBounds ***
+func @addTensors(%arg0: tensor<2x2xf32>) -> f32 {
+  %cst = constant 1.000000e+00 : f32
+  return %cst : f32
+}
+
+// *** IR Dump After ComputeBounds ***
+func @main() {
+  %c0 = constant 0 : index
+  %c9 = constant 9 : index
+  %0 = alloc() : memref<2x2xf32>
+  %cst = constant 1.000000e+00 : f32
+  affine.for %arg0 = 0 to 2 {
+    affine.for %arg1 = 0 to 2 {
+      affine.store %cst, %0[%arg0, %arg1] : memref<2x2xf32>
+    }
+  }
+  %1 = tensor_load %0 : memref<2x2xf32>
+  %2 = call @addTensors(%1) : (tensor<2x2xf32>) -> f32
+  dealloc %0 : memref<2x2xf32>
+  return
+}
+
+// *** IR Dump After Pad ***
+func @main() {
+  %c0 = constant 0 : index
+  %c9 = constant 9 : index
+  %0 = alloc() : memref<2x2xf32>
+  %cst = constant 1.000000e+00 : f32
+  affine.for %arg0 = 0 to 2 {
+    affine.for %arg1 = 0 to 2 {
+      affine.store %cst, %0[%arg0, %arg1] : memref<2x2xf32>
+    }
+  }
+  %1 = tensor_load %0 : memref<2x2xf32>
+  %2 = call @addTensors(%1) : (tensor<2x2xf32>) -> f32
+  dealloc %0 : memref<2x2xf32>
+  return
+}
+
+// *** IR Dump After Pad ***
+func @addTensors(%arg0: tensor<2x2xf32>) -> f32 {
+  %cst = constant 1.000000e+00 : f32
+  return %cst : f32
+}
+
+// *** IR Dump After Canonicalizer ***
+#map0 = affine_map<(d0, d1) -> (d0, d1)>
+#map1 = affine_map<() -> (0)>
+#map2 = affine_map<() -> (2)>
+
+
+module {
+  func @addTensors(%arg0: tensor<2x2xf32>) -> f32 {
+    %cst = constant 1.000000e+00 : f32
+    return %cst : f32
+  }
+  func @main() {
+    %cst = constant 1.000000e+00 : f32
+    %0 = alloc() : memref<2x2xf32>
+    affine.for %arg0 = 0 to 2 {
+      affine.for %arg1 = 0 to 2 {
+        affine.store %cst, %0[%arg0, %arg1] : memref<2x2xf32>
+      }
+    }
+    %1 = tensor_load %0 : memref<2x2xf32>
+    %2 = call @addTensors(%1) : (tensor<2x2xf32>) -> f32
+    dealloc %0 : memref<2x2xf32>
+    return
+  }
+}
+
+// *** IR Dump After CSE ***
+#map0 = affine_map<(d0, d1) -> (d0, d1)>
+#map1 = affine_map<() -> (0)>
+#map2 = affine_map<() -> (2)>
+
+
+module {
+  func @addTensors(%arg0: tensor<2x2xf32>) -> f32 {
+    %cst = constant 1.000000e+00 : f32
+    return %cst : f32
+  }
+  func @main() {
+    %cst = constant 1.000000e+00 : f32
+    %0 = alloc() : memref<2x2xf32>
+    affine.for %arg0 = 0 to 2 {
+      affine.for %arg1 = 0 to 2 {
+        affine.store %cst, %0[%arg0, %arg1] : memref<2x2xf32>
+      }
+    }
+    %1 = tensor_load %0 : memref<2x2xf32>
+    %2 = call @addTensors(%1) : (tensor<2x2xf32>) -> f32
+    dealloc %0 : memref<2x2xf32>
+    return
+  }
+}
+
+// *** IR Dump After LowerTileToPXA ***
+#map0 = affine_map<(d0, d1) -> (d0, d1)>
+#map1 = affine_map<() -> (0)>
+#map2 = affine_map<() -> (2)>
+
+
+module {
+  func @addTensors(%arg0: memref<2x2xf32>) -> f32 {
+    %cst = constant 1.000000e+00 : f32
+    return %cst : f32
+  }
+  func @main() {
+    %cst = constant 1.000000e+00 : f32
+    %0 = alloc() : memref<2x2xf32>
+    affine.for %arg0 = 0 to 2 {
+      affine.for %arg1 = 0 to 2 {
+        affine.store %cst, %0[%arg0, %arg1] : memref<2x2xf32>
+      }
+    }
+    %1 = tensor_load %0 : memref<2x2xf32>
+    %2 = call @addTensors(%1) : (tensor<2x2xf32>) -> f32
+    dealloc %0 : memref<2x2xf32>
+    return
+  }
+}
+
+scratch_plaidml/mlir_tests/simple.mlir:30:10: error: 'std.call' op operand type mismatch
+    %E = call @addTensors(%D) : (tensor<2x2xf32>) -> (f32)
+         ^
+scratch_plaidml/mlir_tests/simple.mlir:30:10: note: see current operation: %2 = "std.call"(%1) {callee = @addTensors} : (tensor<2x2xf32>) -> f32
+// *** IR Dump After mlir::detail::VerifierPass Failed ***
+#map0 = affine_map<(d0, d1) -> (d0, d1)>
+#map1 = affine_map<() -> (0)>
+#map2 = affine_map<() -> (2)>
+
+
+"module"() ( {
+  "func"() ( {
+  ^bb0(%arg0: memref<2x2xf32>):  // no predecessors
+    %cst = "std.constant"() {value = 1.000000e+00 : f32} : () -> f32
+    "std.return"(%cst) : (f32) -> ()
+  }) {sym_name = "addTensors", type = (memref<2x2xf32>) -> f32} : () -> ()
+  "func"() ( {
+    %cst = "std.constant"() {value = 1.000000e+00 : f32} : () -> f32
+    %0 = "std.alloc"() : () -> memref<2x2xf32>
+    "affine.for"() ( {
+    ^bb0(%arg0: index):  // no predecessors
+      "affine.for"() ( {
+      ^bb0(%arg1: index):  // no predecessors
+        "affine.store"(%cst, %0, %arg0, %arg1) {map = #map0} : (f32, memref<2x2xf32>, index, index) -> ()
+        "affine.yield"() : () -> ()
+      }) {lower_bound = #map1, step = 1 : index, upper_bound = #map2} : () -> ()
+      "affine.yield"() : () -> ()
+    }) {lower_bound = #map1, step = 1 : index, upper_bound = #map2} : () -> ()
+    %1 = "std.tensor_load"(%0) : (memref<2x2xf32>) -> tensor<2x2xf32>
+    %2 = "std.call"(%1) {callee = @addTensors} : (tensor<2x2xf32>) -> f32
+    "std.dealloc"(%0) : (memref<2x2xf32>) -> ()
+    "std.return"() : () -> ()
+  }) {sym_name = "main", type = () -> ()} : () -> ()
+  "module_terminator"() : () -> ()
+}) : () -> ()
+
+
